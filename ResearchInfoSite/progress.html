@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Progress</title>
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link rel="stylesheet" href="style4.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="style4.css" type="text/css" media="print" />
+</head>
+<body>
+ <div id="container">
+  <div id="header">
+    <h1> Selfies @ South Bend </h1>
+  </div>
+  <div id="navigation">
+    <ul>
+	<li><a href="index.html">Home</a></li>
+	<li><a href="Kenta.html">Kenta</a></li>
+	<li><a href="mentors.html">Mentors</a></li>
+	<li><a href="project.html">Project</a></li>
+	<li><a href="progress.html">Progress</a></li>
+	<li><a href="journal.html">Journal</a></li>
+    </ul>
+  </div>
+  <div id="content">
+   <h2>VisCG Progress</h2>
+	<p>This is where I'll be keeping track of my weekly progress on my project. I meet with Professor Santelices every Thursday, so for now I'll be updating it every Wednesday.</p>
+<p> Edit 8/6/14: Here's <a href="Hasui-FinalReport.pdf" target="_blank">my final report on VisCG!</a> </p>
+
+<section>
+ <article>
+   <details>
+    <summary>
+     Week 1
+    </summary>
+     <p>Project-wise, this has been a short week. The first couple of days were mostly about settling in, setting up a workspace, and understanding what kind of work I would be doing for the next 10 weeks. I quickly downloaded <a href="http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/keplersr1">Java Eclipse</a>, the IDE that VisCG was developed for. All of the java classes I had taken at Vassar used Netbeans as an IDE, so it took a couple of tutorials and new projects for me to get used to Eclipse. I also had to get comfortable with <a href="http://www.eclipse.org/gef/zest/">Zest</a>, an Eclipse visualization toolkit. By the second day, I had Eclipse, Zest, and VisCG all up and running on my laptop. VisCG creates another Eclipse workspace where you can see a display of the call graph of a particular project. Yiji showed me how to run VisCG, but I promptly forgot how to use it so I spent the next few hours struggling mightily to test it out. But eventually I got it, so I gave myself a pat on the back for the day.</p>
+	    <p> <img src="photos/VisCGerror.png" align="left" width="450px">The next few days I worked on identifying the bugs in VisCG and cleaning up the display. VisCG is supposed to distinguish between user defined methods (green nodes) and library methods (gray nodes). However, I noticed that whenever a user method called another user method, VisCG registered it as a library method. If you look to the left, you can see some of the problems. The gray “fight”, “doDamage”, and “takeDamage” methods are supposed to be the same as the green “projectTwo.Main.fight”, “projectTwo.Animal.doDamage”, and “projectTwo.Animal.takeDamage” methods.</p>
+	<p> My other task was to get the graph to display correctly with no overlap with the options panel.I initially tried to create another graph object to keep the options in, but through research of the eclipse swt.widgets library I found a more useful tool I could use: the ToolBar. I still had some trouble with the spacing: the toolbar took up too much space while the graph didn't take up enough. I eventually figured out that I needed to set the view (parent)'s layout and adjust the options. This worked perfectly, and the graph/toolbar displayed exactly how I wanted! It's fun when things work.
+	<img src="photos/VisCGToolbarExample.png"></p>
+   </details>
+	
+   <details>
+    <summary>
+     Week 2
+    </summary>
+     <p>
+	The call graph displays properly! Or, with minimal errors. I modified the code so each node displays the packageName.className.methodName. The one issue is that the library methods tend to get a bit wordy and hard to read, but for a prototype this should be okay. The priority is on making a correct, functioning call graph, and this configuration does that. I also added an area for each node to display the number of arguments, represented as ".." within parentheses. This keeps the graph compact/not cluttered while distinguishing overloaded methods with the same name. 
+	<img src="photos/morecorrect.png" height="150px"/>
+	</p>
+	<p> The other people on my team have been hard at work, too! Jose, the other undergraduate, has implemented one-way navigation from the nodes to the source code. If the user double-clicks on a user-defined node, the Eclipse editor opens the correct file and highlights the method declaration. Yiji is mostly working on getting the weights of each method correct. </p>
+   </details>
+
+   <details>
+     <summary>
+       Week 3
+     </summary>
+     <p> 
+     <div id="img3">
+      <img alt="popupMenu" src="photos/popupMenu.png" height="200px" id="img3a">
+      <img alt="curvedEdge" src="photos/curvedEdge.png" id="img3">
+     </div>
+	<BR CLEAR="all">
+I made a right-click menu! If a user right-clicks on a node, a pop-up menu appears. The only option that works right now is "dispose". This action deletes a node on the graph. It also deletes all of the node's edges. If a deleted node's callee has no other callers, that node is deleted too. Otherwise it is left alone.
+I also implemented curved edges for recursive methods. If a method calls itself, then the edge will be curved (so you can better see the edge).
+	<p>
+   </details>
+
+   <details>
+      <summary>
+       Week 4
+      </summary>
+	<p> 
+	 <div id="img3">
+	   <img alt="popupMenu2" src="photos/popupMenu2.png" width="300px" id="img3a">
+	   <img alt="collapsedNode" src="photos/collapsedNode.png" width="300px" id="img3">
+	   <img alt="highlight" src="photos/highlightNodes.png" width="300px" id="img3c">
+	  </div>
+I further developed the pop-up menu. The current features are "highlight outgoing nodes", "highlight incoming nodes", "dispose", "collapse", and "expand". "Collapse" works similar to "dispose", except you can re-create the nodes by selecting "expand." Collapsed nodes become orange to distinguish between expanded nodes. The "highlight" options help the user better distinguish relevant connections. These options should make for a much less cluttered and much more readable call graph. 
+	</p>
+	<p>
+	<img src="photos/minimumWeight.png" height="200px">
+	I also created a small text window to display the minimum weight for the slider. This way users can know which connections are being displayed. 
+	</p>
+	<p>
+	Jose implemented navigation from the source code to the call graph. I finally got it working on my computer. 
+Now the methods can be displayed on-demand. 
+I implemented a hide library methods button on the toolbar. 
+I also implemented a "hide/show caller methods" option on the right-click menu. 
+I'm now working on having the "collapse into package" and "collapse into class" options working. It would be ideal if I can just set it to a graph container, but oh well.
+	</p>
+   </details>
+	
+   <details>
+     <summary>
+      Week 5
+     </summary>
+	<p> I disabled animations for the slider! I changed the code so that instead of disposing nodes, VisCG simply hides nodes. This means no more annoying layout animations or bunching up in the corner! It's compatible with the other toolbar options as well. Yiji gave me some of the code for probCG. I still don't know how it gets the weights of every class, but I know where and how the data is stored. I modified the parser so that it formats the names to be compatible with VisCG (package.class.method()).
+	</p>
+	<p>
+	My other big assignment today was to add the parameter types to the graph nodes. Instead of representing the parameters as strings of "..", I decided to actually add the type names. It didn't make the graph as cluttered as I feared, so it actually helps the readability of the graph a lot. After I did that I changed the showNodeHandler, to keep the 2-way navigation still working. I also added zoom in/out options on the right-click menu.  
+<img src = "photos/zoom.png" height="200px">
+<br>
+	</p>
+   </details>
+
+   <details>
+     <summary>
+      Week 6
+     </summary>
+     <p>
+	This week I completely re-configured the class and package collapse/expand options. It's MUCH faster now. Sticking to a model-view-controller structure was the key: changing the values in the model and updating the view is much faster than directly changing the view. I've also figured out how to collapse library methods into their classes or packages. These collapsed nodes are still gray and can be hidden using the "Hide library methods" button. 
+	<img src = "photos/zoomOut.png" height="200px">
+   </p>
+   <p> Other notable achievements include being able to display constructor invocations (i.e. creations of a class instance) in the graph and adding zoom options in the tool bar. The thickness of each edge now corresponds with how large the corresponding call weight is: the higher the weight, the thicker the edge. This further helps the user figure out which calls are more important than others. 
+   </p>
+   </details>
+
+   <details>
+    <summary>
+      Week 7
+    </summary>
+    <p>
+    This week I debugged the code I changed last week (mainly the class/package options). I also implemented weights for every type of connection: any mixed pair of methods, classes, and packages will have a weight now! These weights were calculated using Frechet inequalities. 
+	The slider and the display weights button work with these updated weights.  
+<br>
+<img src = "photos/mixedWeights.png">
+    </p>
+   </details>
+
+  <details>
+    <summary>
+     Week 8
+    </summary>
+    <p> According to a very informal pilot study, the nodes are hard to read. The package.class.method naming convention is useful but offers too much information for the user. Thus I created options for the nodes to display their simple names (just the method or the class name) or their full name (includes the package name and the class name). 
+<br>
+<img alt="fullName" src="photos/fullName.png" height="250px" id="img3a">
+<img alt="simpleName" src="photos/simpleName.png" id="img3">
+    </p>
+  </details>
+
+  <details>
+    <summary>
+    Week 9
+    </summary>
+    <p> The project that we would like to test VisCG on is a text-editing software called JEdit. The problem is, JEdit is so big that testing it on the software has demonstrated some new bugs. When displaying the whole graph, there are around 9000 nodes (methods) and 28,000 connections. This much detail quickly makes the whole graph basically unusable and almost impossible to navigate. I am now working on making the graph display on-demand. This means that if a user chooses an option to create a node, graph will draw the node. The program does not automatically draw all nodes. This configuration is based off of "CallGraph Viewer", an existing call graph plugin for Eclipse. 
+</p>
+<p> I've updated the plugin to use Zest 2.0 now. I know that it doesn't sound like a big deal, but the layouts look much nicer. Thanks to Zest 2.0, connections are now displayed above nodes, and the animations can be disabled! I've also started to overhaul some of the older code in VisCG to make the program more efficient. In JEdit, I've deleted around 7,000 unnecessary connections! </p>
+   </details>
+
+   <details>
+    <summary>
+     Week 10
+    </summary>
+    <p> I'm proud of myself for staying productive on my final week of research. I made the collapse into class/package options as well as the slider much more efficient, which fixed the program from crashing on larger projects. I also debugged the navigation and found out how to correctly identify classes in default/unnamed packages, which was bothering me for quite some time now. I cut a lot of unnecessary code, and finally, I implemented subMenus for the right-click menu. Below you can see what running VisCG on JEdit looks like. It took a lot of time to debug that beast.</p>
+<img src="photos/jEdit.png" height="400">
+<p>Yesterday I took the time to look back on all of the work that I've done these past 10 weeks. Going into this research, I had no experience with eclipse or plug-in development, not much experience with SVN or external libraries (ZEST), and had no idea what research would entail. Now I'm comfortable with all of the above, and got to learn more about Java and HTML. This was a great learning experience. I am extremely grateful to the DREU program, Notre Dame University, Yiji and Professor Santelices for providing a fantastic summer and opportunity for me.</p>
+  </details>
+
+
+ </article>
+</section>
+
+ </div>
+ <div id="footer">
+		<a href="http://cra-w.org/ArticleDetails/tabid/77/ArticleID/54/Distributed-Research-Experiences-for-Undergraduates-DREU.aspx/" target="_blank">DREU</a>, 2014
+ </div>
+</div>
+</body>
+</html>
+	
