@@ -1,0 +1,43 @@
+h1, h2, h3{
+  font-family: 'Lobster', Georgia, Times, serif;
+}
+
+html{
+  font-family: 'Cabin', Helvetica, Arial, sans-serif;
+  height:100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body{
+  height:100%;
+  background: url("background.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.container-fluid{
+  background: url("metal1.png") repeat 0 0;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 30px;
+  max-width: 800px;
+  height: 100%;
+}
+
+#resultMovieContainer{
+  width:100%;
+}
+
+#resultMovie{
+  text-align: center;
+  border: none;
+  width:100%;
+  font-size:150%;
+  color:#00C957;
+}
