@@ -4,49 +4,49 @@ PURPOSE: Defines JQUERY AJAX functions to process form inputs and send form data
 AUTHOR: Kenta Hasui
 */
 
+// Wait till document is ready
+$(function(){
+
 // ---------------------------------------------------
-// Create container to display a selected random movie
+// Compile Handlebars templates
 // ---------------------------------------------------
-var $container = $("<div class='results' id=resultMovieTitle></div>");
-$container.append("<h4>Click Random Movie above if you don't want to watch this film right now</h4>");
-$container.append("<h4>Click See This Movie below if you want to see this movie or you have already seen this movie. The movie will be removed from the database</h4>");
-var $form = $("<form id='resultForm'></form>");
-var $div = $("<div id='resultMovieContainer' class='form-group'></div>");
-$div.append("<input class='text-primary form-control' id='resultMovie' type='text' name='resultMovie' readonly />");
-$form.append($div);
-$form.append("<input class='btn btn-primary' type='submit' name='seeMovie' value='See This Movie' />");
-$container.append($form);
-$container.append("<br>");
+
+// Template to display random movie
+var theTemplateScript = $("#results-template").html();
+var theTemplate = Handlebars.compile(theTemplateScript);
+
+// Template to display all movies
+var allMoviesTemplateScript = $("#allMoviesTemplate").html();
+var allMoviesTemplate = Handlebars.compile(allMoviesTemplateScript);
+
+// Template to display alert messages
+var alertTemplateScript = $("#alertsTemplate").html();
+var alertTemplate = Handlebars.compile(alertTemplateScript);
 
 // ---------------------------------------------------
 // Functions to display success or error messages
 // ---------------------------------------------------
 function successMessage(message){
-  // Remove any previous messages
   $(".alert").remove();
-  // Create a div for the alert message
-  $("#alerts").append('<div class="alert alert-success fade in"></div>');
-  // Change the text
-  $(".alert").text(message);
-  // Allow user to x out of alert
-  $(".alert").append("<a class='close' data-dismiss='alert' aria-label='close'>&times</a>");
+  var alertData = {string:message,
+                   type: "alert-success"};
+  var alertHTML = alertTemplate(alertData);
+  $("#alerts").html(alertHTML);
 }
 
 function errorMessage(message){
   $(".alert").remove();
-  // Create a div for the alert message
-  $("#alerts").append('<div class="alert alert-danger fade in"></div>');
-  // Change the text
-  $(".alert").text(message);
-  // Allow user to x out of alert
-  $(".alert").append("<a class='close' data-dismiss='alert' aria-label='close'>&times</a>");  
+  var alertData = {string: message,
+                   type: "alert-danger"};
+  var alertHTML = alertTemplate(alertData);
+  $("#alerts").html(alertHTML);
 }
 
 // ------------------------------------------------------
 // Variable to hold request
 // All JQuery variables are prefixed with $
-var request;
 // ------------------------------------------------------
+var request;
 
 // ----------------------------------------------------
 // Function to submit the insert title form
@@ -72,23 +72,24 @@ $("#insertTitleForm").submit(function(event){
     //url: "/insertMovie.php",
     url: "/insertTitle.php",
     type: "post",
-    data: serializedData
+    data: serializedData, 
+    dataType: "json"
   });
 
-  // Callback handler. Called on success!
-  request.done(function (response, textStatus, jqXHR){
-    if(response.includes("ERROR:")){
-      errorMessage(response);
+  // Callback handler. Called on success! Response is a JSON object
+  request.done(function (responseJSON, textStatus, jqXHR){
+    if(responseJSON["Error"]){
+      errorMessage(responseJSON["Message"]);
     }
     else{
-      successMessage(response);
+      successMessage(responseJSON["Message"]);
     }
   });
 
   // Callback handler that will be called on failure
   request.fail(function (jqXHR, textStatus, errorThrown){
     // Log the error to the console
-    alert("The following error occurred: "+ textStatus, errorThrown);
+    console.log("The following error occurred: "+ textStatus, errorThrown);
   });
 
   // Callback handler. Called regardless of success or failure
@@ -107,26 +108,95 @@ $("#insertTitleForm").submit(function(event){
 $("#randomMovieForm").submit(function(event){
   request = $.ajax({
     url:"/randomMovie.php",
-    type:"post"
+    type:"post",
+    dataType:"json"
   });
 
-  request.done(function(response){
-    $container.insertBefore($("#alerts"));
-    $("#resultMovie").val(response);
+  request.done(function(responseJSON){
+    // Extract message
+    var response = responseJSON["Message"];
+    // Success
+    if(responseJSON["Error"]){
+      errorMessage(response)
+    }
+    // Error
+    else{
+      // If the resultForm doesn't exist, render the html
+      if(!$("#resultForm").length){
+        var resultData = {name:response};
+        var resultHTML = theTemplate(resultData);
+        // Display HTML in browser page
+        $("#resultMovieDiv").html(resultHTML);
+        // Add the submit function
+        $("#resultForm").submit(seeMovieSubmit);
+      }
+      // Otherwise just update the input
+      else{
+        $("#resultMovie").val(response);
+      }
+    }
+    
   });
 
-  request.fail(function(error){
-    console.log(error);
+  // Callback handler that will be called on failure
+  request.fail(function (jqXHR, textStatus, errorThrown){
+    // Log the error to the console
+    console.log("The following error occurred: "+ textStatus, errorThrown);
   });
 
   event.preventDefault();
 });
 
 // ------------------------------------------------
+// Function to submit the allMoviesForm. 
+// This displays the results of a SQL Query as a result
+// ------------------------------------------------
+$("#allMoviesForm").submit(function(event){
+  if(request) {
+    request.abort();
+  }
+  // Set up local variables: this represents the whole form
+  var $form = $(this);
+  
+  // Ajax request
+  request = $.ajax({
+    url: "/allMovies.php",
+    type: "post",
+    dataType: "json"
+  });
+  
+  // Success event handler
+  request.done(function(responseJSON){
+    if(responseJSON["Error"]){
+      errorMessage(responseJSON["Message"]);
+    }
+    else{
+      var allMoviesObject = {allMovies : responseJSON};
+      var allMoviesHTML = allMoviesTemplate(allMoviesObject);
+      $("#allMoviesDiv").html(allMoviesHTML);
+      $(".toggleButton").click(toggleButtonClick)
+    }
+  });
+  
+  // Callback handler that will be called on failure
+  request.fail(function (jqXHR, textStatus, errorThrown){
+    // Log the error to the console
+    console.log("The following error occurred: "+ textStatus, errorThrown);
+  });
+  
+  // Prevent the page from refreshing
+  event.preventDefault();
+});
+
+$("#hideAllMoviesButton").click(function(event){
+  $("#allMoviesTable").remove();
+});
+
+// ------------------------------------------------
 // Function to submit the result movie form. 
 // This marks a movie as seen in the mySQL database
 // ------------------------------------------------
-$form.submit(function(event){
+function seeMovieSubmit(event){  
   var $form = $(this);
   // Select and cache all fields
   var $inputs = $form.find("input");
@@ -137,15 +207,16 @@ $form.submit(function(event){
   request = $.ajax({
     url: "/seeMovie.php",
     type: "post",
+    dataType:"json",
     data: serializedData
   });
 
-  request.done(function(response){
-    if(response.includes("ERROR:")){
-      errorMessage(response);
+  request.done(function(responseJSON){
+    if(responseJSON["Error"]){
+      errorMessage(responseJSON["Message"]);
     }
     else{
-      successMessage(response);
+      successMessage(responseJSON["Message"]);
     }
   });
 
@@ -157,5 +228,43 @@ $form.submit(function(event){
 
   // Prevent the page from refreshing
   event.preventDefault();
-});
+}
 
+// ------------------------------------------------
+// Function to toggle the "seen" values in the table
+// This changes the seen entry in the mySQL database
+// ------------------------------------------------
+function toggleButtonClick(){
+  // Disable button and extract movie title
+  $button = $(this);
+  $button.prop("disabled", true);
+  $row = $button.parent().parent();
+  $movieName = $row.children(".tableMovieTitle").text();
+  $seen = $row.children(".tableMovieSeen");
+  
+  request = $.ajax({
+    url: "/toggleMovie.php", 
+    type: "post", 
+    data: {"ToggleMovieTitle":$movieName},
+    dataType: "json"
+  });
+  
+  request.done(function(responseJSON){
+    if(responseJSON["Error"]){
+      errorMessage(responseJSON["Message"]);
+    }
+    else{
+      $seen.text()=='Yes' ? $seen.text('No') : $seen.text('Yes');
+    }
+  });
+  
+   // Callback handler that will be called on failure
+  request.fail(function (jqXHR, textStatus, errorThrown){
+    // Log the error to the console
+    alert("The following error occurred: "+ textStatus, errorThrown);
+  }); 
+  
+  $button.prop("disabled", false);
+}
+
+}); // End document.ready()

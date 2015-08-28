@@ -5,7 +5,7 @@ include("dbinfo.inc.php");
 $conn = new mysqli($mysql_server, $mysql_username, $mysql_password, $mysql_database);
 // Check connection
 if ($conn->connect_error){
-  echo "ERROR: Connection failed: {$conn->connect_error}";
+  sendErrorMessage("Connection failed: {$conn->connect_error}");
 }
 
 $movieTitle = ""; 
@@ -19,10 +19,10 @@ if(isset($_POST["resultMovie"])){
 $sql = "UPDATE Movies1 SET Seen=1 WHERE movietitle='{$movieTitle}'";
 
 if ($conn->query($sql) === TRUE){
-  echo "{$movieTitle} has been marked as seen!";
+  sendSuccessMessage("{$movieTitle} has been marked as seen!");
 }
   else{
-  echo "ERROR: {$conn->error}";
+  sendErrorMessage("ERROR: {$conn->error}");
 }
 
 $conn->close();

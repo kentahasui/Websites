@@ -3,9 +3,11 @@ include("dbinfo.inc.php");
 
 // Connect to database
 $conn = new mysqli($mysql_server, $mysql_username, $mysql_password, $mysql_database);
+
 // Check connection
 if ($conn->connect_error){
-  die("ERROR: Connection failed: " . $conn->connect_error . "<br>");
+  sendErrorMessage("Connection failed: " . $conn->connect_error);
+  exit;
 }
 
 // SQL query
@@ -17,14 +19,14 @@ if($result = $conn->query($sql)){
   if($result->num_rows > 0){
     $row = $result->fetch_assoc();
     $title = $row['movietitle'];
-    echo $title;
+    sendSuccessMessage($title);
   }
   else {
-    echo "ERROR: 0 results";
+    sendErrorMessage("ERROR: 0 results");
   }
 }
 else{
-  echo "ERROR: {$conn->error}";
+  sendErrorMessage("ERROR: {$conn->error}");
 }
 $conn->close();
 

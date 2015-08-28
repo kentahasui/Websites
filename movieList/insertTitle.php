@@ -9,7 +9,8 @@ if(is_ajax()){
     $conn = new mysqli($mysql_server, $mysql_username, $mysql_password, $mysql_database);
     // Check connection
     if ($conn->connect_error){
-      die("ERROR: Connection failed: " . $conn->connect_error);
+      sendErrorMessage($conn->connect_error);
+      exit;
     }
 
     // Sql command
@@ -17,10 +18,10 @@ if(is_ajax()){
 
     // Use command, check if it went through
     if ($conn->query($sql) === TRUE){
-      echo "{$movieTitle} has been added to the database!";
+      sendSuccessMessage("{$movieTitle} has been added to the database!");
     } else{
       $error = "ERROR: SQL Command Failed: {$conn->error}";
-      echo $error;
+      sendErrorMessage($error);
     }
 
     // Close connection

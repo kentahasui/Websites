@@ -1,50 +1,124 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Movie!</title>
+  <!-- Load twitter bootstrap, custom stylesheet, and google fonts -->
   <link rel="stylesheet" 
-        href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+            href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
   <link rel = "stylesheet" type="text/css" href="style.css"/>
   <link href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Cabin" rel="stylesheet" type="text/css">
+
+  <!-- Load JQuery, Bootstrap scripts, and Handlebars.js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script>
     if (typeof jQuery === 'undefined') {
         document.write(unescape('%3Cscript%20src%3D%22./jquery-1.11.3.min.js%22%3E%3C/script%3E'));
     }
   </script>
+  <script src="handlebars.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+  <!-- My custom script -->
+  <script src="script.js"></script>
+  <script src="translate.js"></script>
 </head>
 
 <body>
   <div class="container-fluid">
+    <!-- Header for page -->
     <div class="page-header">
       <h1 class="text-center">Jyen and Kenta's Random Movie Selector</h1>
     </div>
+    
+    <!-- Div area to display success or error messages -->
+    <div id="alerts"></div>
   
+    <!--Form to insert data into MySQL database using PHP -->
     <div class="forms" id="insertMovie">
       <h2>Insert a movie you want to see in the future!</h2>
-      <!--Form to insert data into MySQL database using PHP -->
-      <form id='insertTitleForm'>
+      <form id="insertTitleForm">
         <label for="Title">Title</label>
         <input type="text" name="movieTitle" required autofocus maxlength="255"/>
         <input class="btn btn-primary" type="submit" value="Submit!"/>
       </form>
     </div>
   
+    <!--form to retrieve a random movie from MySQL database -->
     <div class="forms" id="getMovie">
       <h2>Retrieve a random Movie!</h2>
-      <!--form to retrieve a random movie from MySQL database -->
-      <form id='randomMovieForm'>
+      <form id="randomMovieForm">
         <input class="btn btn-primary" type="submit" name="randomMovie" value="Random Movie!"/>
       </form>
     </div>
+    
+    <!-- Div area to hold the resulting random movie -->
+    <div class="forms results" id="resultMovieDiv">
+    </div>
 
-    <div id="alerts"></div>
+    <!-- Form to display all movies in the database -->
+    <div class="forms" id="getAllMovies">
+      <h2>Display all the movies (if you don't like danger)</h2>
+      <div class='row' id="allMoviesButtons">
+        <form class='col-sm-6' id="allMoviesForm">
+          <input class="btn btn-primary" type="submit" name="allMovies" value="All Movies!"/>
+        </form>
+        <div class='col-sm-6' id="hideAllMoviesDiv">
+          <button class="btn btn-primary" id="hideAllMoviesButton">Hide All Movies!</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Div area to display all movies -->
+    <div class="allMoviesDiv" id="allMoviesDiv">
+    </div>
+  
+    <!-- Handlebars template for displaying the random movie-->
+    <script id="results-template" type="text/x-handlebars-template">
+      <h4>Click Random Movie above if you don't want to watch this film right now</h4>
+      <h4>Click See This Movie below if you want to see this movie or you have already seen this movie. The movie will be removed from the database</h4>
+      <form id="resultForm">
+        <div id="resultMovieContainer" class="form-group">
+          <input class="text-primary form-control" id="resultMovie" type="text" name="resultMovie" value="{{name}}" readonly />
+        </div>
+        <input class="btn btn-primary" type="submit" name="seeMovie" value="See This Movie" />
+      </form>
+    </script>
+
+    <!-- Pass in AllMovies -->
+    <script id="allMoviesTemplate" type="text/x-handlebars-template">
+      <table id='allMoviesTable' class="table table-bordered table-condensed table-hover">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Seen</th>
+            <th>Toggle Seen/Not Seen</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each allMovies}}
+          <tr>
+            <td class="tableMovieTitle">{{movietitle}}</td>
+            <td class="tableMovieSeen">{{seen}}</td>
+            <td>
+              <button class="btn btn-sml toggleButton">Toggle</button></td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </script>
+    
+    <!-- Handlebars template for alerts -->
+    <script id="alertsTemplate" type="text/x-handlebars-template">
+      <div class="alert {{type}} fade in">
+        <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        {{string}}
+      </div>
+    </script>
 
   </div>
-  <script src="script.js"></script>
 </body>
 </html>
+	
