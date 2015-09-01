@@ -41,7 +41,7 @@ class Translator
     $ch = curl_init();
     curl_setopt ($ch, CURLOPT_URL, $url);
     //Set the HTTP HEADER Fields.
-    curl_setopt ($ch, CURLOPT_HTTPHEADER, array($this->AuthHeader,"Content-Type: text/xml"));
+    curl_setopt ($ch, CURLOPT_HTTPHEADER, array($this->AuthHeader,"Content-Type: text/plain"));
     //CURLOPT_RETURNTRANSFER- TRUE to return the transfer as a string of the return value of curl_exec().
     curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE);
     //CURLOPT_SSL_VERIFYPEER- Set FALSE to stop cURL from verifying the peer's certificate.
@@ -64,6 +64,8 @@ class Translator
     curl_close($ch);
     return $curlResponse;
   }
+  
+  
   
 }
 
