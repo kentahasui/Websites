@@ -3,20 +3,65 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Movie!</title>
+  <title>Translate</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script>
     if (typeof jQuery === 'undefined') {
         document.write(unescape('%3Cscript%20src%3D%22./jquery-1.11.3.min.js%22%3E%3C/script%3E'));
     }
   </script>
-  <script src="translate.js"></script>
+  <style>
+  #translationDivCentered{
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    width: 16em;
+    height: 6em;
+    margin-left: -8em; /*set to a negative number 1/2 of your width - so middle is centered*/
+    margin-top: -3em; /*set to a negative number 1/2 of your height*/
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    text-align:center;
+  }
+  #translationText{
+    margin:auto;
+  }
+  .translationRandom{
+    position: relative;
+  }
+  <!-- http://stackoverflow.com/questions/5419134/how-to-detect-if-two-divs-touch-with-jquery -->
+  </style>
+
 </head>
 
 <body>
-  <div class="translationDiv">
-    <p id="translationText">
+  <div class="Contents">
+    <div id="translationDivCentered">
+      <p id="translationText"> Hi </p>
+    </div>
   </div>
+  
+  <script lang="JavaScript">
+  var test = $("#translationDivCentered");
+  
+  function generateRandomDiv(){
+    var $div = $("<div>", {class:"translationRandom"});
+    $div.html('Random Text');
+    $div.css('left', '-1em'); // MAKE SURE OVER MARGIN-LEFT OF PARENT?
+    $div.css('top', '-1em');
+    $("#translationDivCentered").append($div);
+  }
+  function generateRandomOffset(){
+  
+  }
+  generateRandomDiv();
+  function generateRandomXCoordinate(){
+  }
+  function generateRandomYCoordinate(){
+  }
+  </script>
 </body>
+
+
 
 </html>
