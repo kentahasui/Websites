@@ -1,5 +1,6 @@
 <?php
-// Translator.php
+// Translate.php
+// Script to retrieve an access token from the Microsoft Translate API
 
 /* TokenRetriever class
  * Wrapper for the static retrieveMicrosoftToken
@@ -18,7 +19,7 @@ class TokenRetriever
   *
   * @return string.
   */
-  public static function retrieveMicrosoftToken($clientID, $clientSecret, $grantType, $scopeUrl, $authUrl)
+  public function retrieveMicrosoftToken($clientID, $clientSecret, $grantType, $scopeUrl, $authUrl)
   {
     // Create new curl object, and set its url and post parameters
     $curl = curl_init();
@@ -46,6 +47,7 @@ class TokenRetriever
       $curlError = curl_error($curl);
       throw new Exception($curlError);
     }
+    curl_close($curl);
     return $token;
   }
 }
@@ -57,5 +59,6 @@ $GrantType    = 'client_credentials';
 $ScopeURL     = 'http://api.microsofttranslator.com';
 $AuthURL      = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
 
-echo TokenRetriever::retrieveMicrosoftToken($ClientID, $ClientSecret, $GrantType, $ScopeURL, $AuthURL);
+$tokenRetriever = new TokenRetriever();
+echo $tokenRetriever->retrieveMicrosoftToken($ClientID, $ClientSecret, $GrantType, $ScopeURL, $AuthURL);
 ?>

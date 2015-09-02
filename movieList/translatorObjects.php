@@ -1,4 +1,4 @@
-<?php
+ <?php
 /* TokenRetriever class
  * Wrapper for the static retrieveMicrosoftToken
  * The token is needed to access the Microsoft Translate API
@@ -7,13 +7,11 @@ class TokenRetriever
 { 
  /*
   * Get the 10-minute access token.
-  *
   * @param string $clientID     Application client ID.
   * @param string $clientSecret Application client ID.
   * @param string $grantType    Grant type.
   * @param string $scopeUrl     Application Scope URL.
-  * @param string $authUrl      Oauth Url.
-  *
+  * @param string $authUrl      Oauth Url. 
   * @return string.
   */
   public function retrieveMicrosoftToken($clientID, $clientSecret, $grantType, $scopeUrl, $authUrl)
@@ -121,7 +119,9 @@ class Translator
     return $curlResponse;
   }
   
-  /* Returns the languages to translate */
+  /* Returns all the language codes of languages we can translate to
+   * @return Array         Array of strings representing all language codes supported by microsoft translator
+   */
   public function getLanguagesForTranslate(){
     // Retrieves all language codes. Caches the information in an array
     if(count($this->LanguageCodes)==0){
@@ -129,11 +129,9 @@ class Translator
       $languagesURL = "http://api.microsofttranslator.com/V2/Http.svc/GetLanguagesForTranslate";
       $langsXML = $this->curlRequest($languagesURL); // Pass in null 
       // Converts xml string as an object
-      $langsObject = simplexml_load_string($langsXML);
+      $langsXMLObject = simplexml_load_string($langsXML);
       // Places all 
-      foreach($langsObject->string as $language){
-        echo $language . ":";
-        echo get_class($language) . "\n";
+      foreach($langsXMLObject->string as $language){
         $languageCode = strip_tags($language->asXML());
         $this->LanguageCodes[] = $languageCode;
       }
@@ -141,26 +139,66 @@ class Translator
     return $this->LanguageCodes;
   }
   
-  public function translate($text, $from, $to, $maxTranslations, $options, $contentType, $uri, $user){
+  /* Translates a string from one language to another
+   * @param string $text   The text to translate
+   * @param string $from   The language code of the original text 
+   * @param string $to     The language code of the language to translate to 
+   *
+   * @return string        The translated text
+   */
+  public function translate($text, $from, $to){
     // Construct parameters to pass in through the HTTP GET method
     $params = "from=$from".
               "&to=$to".
-              "&maxTranslations=$maxTranslations".
-              "&text=".urlencode($text).
-              "&user=$user".
-              "&uri=$uri".
-              "&contentType=$contentType";
-    //HTTP getTranslationsMethod URL.
-    $translationURL = "http://api.microsofttranslator.com/V2/Http.svc/GetTranslations?$params";
+              "&text=".urlencode($text);
+    //HTTP getTranslationsMethod URL
+    $translationURL = "http://api.microsofttranslator.com/v2/Http.svc/Translate?$params";
+    $translationString = $this->curlRequest($translationURL);
+    return $translationString;
+  }
+  
+  /* Translates a string into all other languages. 
+   * @param string $text    The text to translate
+   * @param string $from    The language code to translate from. Default is English
+   * @return Array          Array of translations as text(maybe JSON string?)
+   */
+  public function translateToAllLanguages($text, $from='en'){
+    // Temporary variable to store results
+    $OutputArray = array();
+    // All of the language codes
+    $ArrayOfLanguageCodes = $this->getLanguagesForTranslate();
+    // Place all of the translations into the output array
+    foreach($ArrayOfLanguageCodes as $code){
+      if($code !== $from){
+        $OutputArray[] = $this->translate($text, $from, $code);
+      }
+    }
+    // Place original string at end of array
+    $OutputArray[] = $text;
+    return $OutputArray;
+  }
+  
+  /* Translates a string into all other
+   * @param string $text    The text to translate
+   * @param string $from    The language code to translate from. Default is English
+   * @return string         Final result string. Maybe an associative array containing input, final result, and stack trace
+   */
+  public function telephone($text, $from='en'){
+  
   }
   
 } // END TRANSLATOR CLASS
 
+// Main thread of execution
 try{
   $translator = new Translator();
   echo $translator->getAuthHeader();
   echo "\n";
+  echo "\n";
   print_r ($translator->getLanguagesForTranslate());
+  echo "\n";
+  echo "\n";
+  print_r ($translator->translateToAllLanguages("Hello"));
 }catch (Exception $e) {
   echo "Exception: " . $e->getMessage() . PHP_EOL;
 }
