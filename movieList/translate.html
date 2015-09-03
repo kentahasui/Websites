@@ -18,8 +18,7 @@
     left: 50%;
     width: 200px;
     height: 100px;
-    margin-left: -100px; /*set to a negative number 1/2 of your width */
-    margin-top: -50px; /*set to a negative number 1/2 of your height*/
+    transform: translate(-50%, -50%);
     border: 1px solid #ccc;
     background-color: #f3f3f3;
     text-align:center;
@@ -31,7 +30,7 @@
     border: 1px solid #ccc;
     background-color: #FFA07A;
     white-space: nowrap;
-    overflow:scroll;
+    overflow:auto;
   }
   <!-- http://stackoverflow.com/questions/5419134/how-to-detect-if-two-divs-touch-with-jquery -->
   </style>
@@ -46,16 +45,76 @@
   </div>
   
   <script lang="JavaScript">
+  $(document).ready(function(){
+  
   var $centeredDiv = $("#centeredDiv");
   
-  function generateRandomDiv(){
-    var $div = $("<div>", {class:"translationRandom"});
-    $div.html('Random Text');
-    $div.css('left', generateRandomOffsetSide() + "px");
-    $div.css('top', '-50px');
+  function makeDiv(count){
+    var divsize = ((Math.random()*100) + 50).toFixed();
+    var color = '#'+ Math.round(0xffffff * Math.random()).toString(16);
+    $newdiv = $('<div/>').css({
+        'width':divsize+'px',
+        'height':divsize+'px',
+        'background-color': color
+    });
     
+    // var posx = (Math.random() * ($(document).width() - divsize)).toFixed();
+    // var posy = (Math.random() * ($(document).height() - divsize)).toFixed();
+    var posx = generateRandomOffsetHorizontal();
+    var posy = generateRandomOffsetVertical();
     
-    $centeredDiv.append($div);
+    if(count == 0) return;
+    $newdiv.css({
+        'position':'relative',
+        'left':posx+'px',
+        'top':posy+'px',
+        'display':'none'
+    }).appendTo( $centeredDiv ).delay(20).fadeIn(200, function(){
+       makeDiv(count-1); 
+    }); 
+  }
+  
+  makeDiv(5);
+  
+    // returns a double
+  function generateRandomOffsetHorizontal(){
+    // Calculate positions of both ends of div
+    $divWidth = $centeredDiv.outerWidth();
+    $divLeftPos = $centeredDiv.position().left;
+    $divRightPos = $divLeftPos + $divWidth;
+    
+    $lowerBound = $divWidth; 
+    $maxOffSetLeft = $divLeftPos; // Must get negated: moves the div to left
+    $maxOffSetRight = $(window).width() - $divRightPos;
+    
+    if(Math.random() < 0.5){
+      // Go left
+      return 0 - getRandomInt($lowerBound, $maxOffSetLeft);
+    }
+    else{
+      // Go right 
+      return getRandomInt($lowerBound, $maxOffSetRight);
+      console.log("Positive! Go right");
+    }
+  }
+  
+  function generateRandomOffsetVertical(){
+    $divHeight = $centeredDiv.height();
+    $divTopPos = $centeredDiv.position().top;
+    $divBottomPos = $divTopPos + $divHeight;
+    
+    $lowerBound = $divHeight;
+    $maxOffSetTop = $divTopPos;
+    $maxOffSetBottom = $(window).height() - $divBottomPos;
+    
+    if(Math.random() < 0.5){
+      // Move up
+      return 0 - getRandomInt($lowerBound, $maxOffSetTop);
+    }
+    else{
+      // Move down
+      return getRandomInt($lowerBound, $maxOffSetBottom);
+    }
   }
   
   // Returns a random integer between min (included) and max (excluded)
@@ -64,11 +123,28 @@
     return Math.floor(Math.random() * (max - min)) + min;
   }
   
-  /* Returns a double.
-   */
-  function generateRandomOffsetSide(){
+  
+}); // End document.ready
+  /*
+  function generateRandomDiv(){
+    var color = '#'+ Math.round(0xffffff * Math.random()).toString(16);
+    var $div = $("<div>", {class:"translationRandom"});
+    $div.html('Random Text');
+    $div.css('left', generateRandomOffsetHorizontal() + "px");
+    $div.css('top',  generateRandomOffsetVertical()   + 'px');
+    $centeredDiv.append($div).fadeIn(100).delay(300).fadeOut(200, generateRandomDiv());
+  }
+  
+  // Returns a random integer between min (included) and max (excluded)
+  // Using Math.round() will give you a non-uniform distribution!
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+  
+  // returns a double
+  function generateRandomOffsetHorizontal(){
     // Calculate positions of both ends of div
-    $divWidth = $centeredDiv.width();
+    $divWidth = $centeredDiv.outerWidth();
     $divLeftPos = $centeredDiv.position().left;
     $divRightPos = $divLeftPos + $divWidth;
     
@@ -76,31 +152,42 @@
     $maxOffSetLeft = $divLeftPos; // Must get negated: moves the div to left
     $maxOffSetRight = $(window).width() - $divRightPos;
     
-    console.log($maxOffSetLeft);
-    console.log($maxOffSetRight);
-    
-    if(chosenValue = Math.random() < 0.5){
-     console.log("Negative! Go left"); 
-     return 0 - getRandomInt($lowerBound, $maxOffSetLeft);
+    if(Math.random() < 0.5){
+      // Go up
+      return 0 - getRandomInt($lowerBound, $maxOffSetLeft);
     }
     else{
+      // Go left 
       return getRandomInt($lowerBound, $maxOffSetRight);
       console.log("Positive! Go right");
     }
   }
   
-  /* Returns a double.
-   */
-  function generateRandomMarginTop(){
-    $minOffSetTop = $centeredDiv.height / 2;
-    $maxOffSetTop = 0.0;
+  function generateRandomOffsetVertical(){
+    $divHeight = $centeredDiv.height();
+    $divTopPos = $centeredDiv.position().top;
+    $divBottomPos = $divTopPos + $divHeight;
+    
+    $lowerBound = $divHeight;
+    $maxOffSetTop = $divTopPos;
+    $maxOffSetBottom = $(window).height() - $divBottomPos;
+    
+    if(Math.random() < 0.5){
+      // Move up
+      return 0 - getRandomInt($lowerBound, $maxOffSetTop);
+    }
+    else{
+      // Move down
+      return getRandomInt($lowerBound, $maxOffSetBottom);
+    }
+  }
   
+  function generateManyDivs(){
+    for(var i = 0; i<10; i++){
+      generateRandomDiv();
+    }
   }
-  generateRandomDiv();
-  function generateRandomXCoordinate(){
-  }
-  function generateRandomYCoordinate(){
-  }
+  */
   </script>
 </body>
 
