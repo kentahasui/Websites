@@ -11,23 +11,27 @@
     }
   </script>
   <style>
-  #translationDivCentered{
+  #centeredDiv{
     position:absolute;
+    /* Center the div */
     top: 50%;
     left: 50%;
-    width: 16em;
-    height: 6em;
-    margin-left: -8em; /*set to a negative number 1/2 of your width - so middle is centered*/
-    margin-top: -3em; /*set to a negative number 1/2 of your height*/
+    width: 200px;
+    height: 100px;
+    margin-left: -100px; /*set to a negative number 1/2 of your width */
+    margin-top: -50px; /*set to a negative number 1/2 of your height*/
     border: 1px solid #ccc;
     background-color: #f3f3f3;
     text-align:center;
   }
   #translationText{
-    margin:auto;
   }
   .translationRandom{
     position: relative;
+    border: 1px solid #ccc;
+    background-color: #FFA07A;
+    white-space: nowrap;
+    overflow:scroll;
   }
   <!-- http://stackoverflow.com/questions/5419134/how-to-detect-if-two-divs-touch-with-jquery -->
   </style>
@@ -36,22 +40,60 @@
 
 <body>
   <div class="Contents">
-    <div id="translationDivCentered">
+    <div id="centeredDiv">
       <p id="translationText"> Hi </p>
     </div>
   </div>
   
   <script lang="JavaScript">
-  var test = $("#translationDivCentered");
+  var $centeredDiv = $("#centeredDiv");
   
   function generateRandomDiv(){
     var $div = $("<div>", {class:"translationRandom"});
     $div.html('Random Text');
-    $div.css('left', '-1em'); // MAKE SURE OVER MARGIN-LEFT OF PARENT?
-    $div.css('top', '-1em');
-    $("#translationDivCentered").append($div);
+    $div.css('left', generateRandomOffsetSide() + "px");
+    $div.css('top', '-50px');
+    
+    
+    $centeredDiv.append($div);
   }
-  function generateRandomOffset(){
+  
+  // Returns a random integer between min (included) and max (excluded)
+  // Using Math.round() will give you a non-uniform distribution!
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+  
+  /* Returns a double.
+   */
+  function generateRandomOffsetSide(){
+    // Calculate positions of both ends of div
+    $divWidth = $centeredDiv.width();
+    $divLeftPos = $centeredDiv.position().left;
+    $divRightPos = $divLeftPos + $divWidth;
+    
+    $lowerBound = $divWidth; 
+    $maxOffSetLeft = $divLeftPos; // Must get negated: moves the div to left
+    $maxOffSetRight = $(window).width() - $divRightPos;
+    
+    console.log($maxOffSetLeft);
+    console.log($maxOffSetRight);
+    
+    if(chosenValue = Math.random() < 0.5){
+     console.log("Negative! Go left"); 
+     return 0 - getRandomInt($lowerBound, $maxOffSetLeft);
+    }
+    else{
+      return getRandomInt($lowerBound, $maxOffSetRight);
+      console.log("Positive! Go right");
+    }
+  }
+  
+  /* Returns a double.
+   */
+  function generateRandomMarginTop(){
+    $minOffSetTop = $centeredDiv.height / 2;
+    $maxOffSetTop = 0.0;
   
   }
   generateRandomDiv();
