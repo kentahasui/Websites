@@ -189,6 +189,7 @@ class Translator
   
 } // END TRANSLATOR CLASS
 
+/*
 // Main thread of execution
 try{
   $translator = new Translator();
@@ -202,5 +203,6 @@ try{
 }catch (Exception $e) {
   echo "Exception: " . $e->getMessage() . PHP_EOL;
 }
+  */
 
 ?>
