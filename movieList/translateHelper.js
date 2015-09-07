@@ -55,4 +55,35 @@ $(document).ready(function(){
     
   }
   
+  // ------------------------------------------------------
+  // Variable to hold request
+  // All JQuery variables are prefixed with $
+  // ------------------------------------------------------
+  var request;
+  // ----------------------------------------------------
+  // Function to print all the words
+  // ----------------------------------------------------
+  $("#button").submit(function(event){
+    // abort any pending request
+    if(request) {
+      request.abort();
+    }
+    
+    // Ajax request
+    request = $.ajax({
+      //url: "/insertMovie.php",
+      url: "/getLanguagesForTranslate.php",
+      type: "post",
+      data: '', 
+      dataType: "json"
+    });
+
+    // Callback handler. Called on success! Response is a JSON object
+    request.done(function (responseJSON, textStatus, jqXHR){
+      console.log(responseJSON);
+    });
+    
+  });
+  
+  
 }); // End document.ready
