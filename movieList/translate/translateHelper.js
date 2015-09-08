@@ -1,89 +1,59 @@
 // TranslateHelper.js
+var allTextJSON = 
+  ' {"Arabic":"أحبك","Bosnian (Latin)":"volim te","Bulgarian":"Обичам те","Catalan":"T\'estimo","Chinese Simplified":"我爱你",         '+ 
+  ' "Chinese Traditional":"我愛你","Croatian":"volim te","Czech":"Miluju tě","Danish":"Jeg elsker dig","Dutch":"Ik hou van jou",       '+ 
+  ' "Estonian":"Ma armastan sind","Finnish":"Minä rakastan sinua","French":"Je t\'aime","German":"Ich liebe dich",                    '+ 
+  ' "Greek":"Σε αγαπώ","Haitian Creole":"Mwen renmen ou","Hebrew":"אני אוהב אותך","Hindi":"मुझे तुमसे प्यार है","Hmong Daw":"kuv hlub koj",      '+ 
+  ' "Hungarian":"szeretlek","Indonesian":"Aku cinta kamu","Italian":"Ti amo","Japanese":"愛しています","Klingon":"qaparHa\'qu\'",         '+
+  ' "Korean":"당신을 사랑해요","Latvian":"es tevi mīlu","Lithuanian":"aš tave myliu","Malay":"saya cintakan awak","Maltese":"Inħobbok",  '+
+  ' "Yucatec Maya":"In yaabilmajech","Norwegian":"jeg elsker deg","Querétaro Otomi":"Xi di ne\'i","Persian":"دوستت دارم","Polish":"Kocham cię", '+
+  ' "Portuguese":"Eu te amo","Romanian":"te iubesc","Russian":"Я тебя люблю","Serbian (Cyrillic)":"волим те","Serbian (Latin)":"volim te", '+
+  ' "Slovak":"ľúbim ťa","Slovenian":"ljubim te","Spanish":"Te quiero","Swedish":"Jag älskar dig","Thai":"ฉันรักเธอ","Turkish":"Seni seviyorum", '+
+  ' "Ukrainian":"Я тебе кохаю","Urdu":"ميں تم سے پيار کرتی ہوں","Vietnamese":"Anh yêu em","Welsh":"rydw i\'n dy garu di"}';
+var allTextObject = JSON.parse(allTextJSON);
+var allTextArray = $.map(allTextObject, function(text, language){return {'language':language, 'text': text};});
+$.each(allTextArray, function(index, element){console.log(element)});
+var arrayLength=allTextArray.length;
+
+var delay = 750;
+
 $(document).ready(function(){
-  var $centeredDiv = $("#centeredDiv");
-  var $divLeft = $centeredDiv.position().left;
-  var $divRight = $divLeft + $centeredDiv.outerWidth();
-  var $divTop = $centeredDiv.position().top;
-  var $divBottom = $divTop + $centeredDiv.outerHeight();
-  
-  function makeDiv(count){
-    if (count<=0) return makeFinalDiv();
+  function makeDiv(index){
+    if(index < 0)return makeFinalDiv();
     
     // vary size and color for fun
     var color = '#'+ Math.round(0xffffff * Math.random()).toString(16);
-    
+    var object = allTextArray[index % arrayLength];
+    var text = object['text'];
+    var language = object['language'];
     // Create new span and div to place in page
-    var $newSpan = $('<span/>').addClass('translationText').css('color', color).html('raaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadom');
+    var $newSpan = $('<span/>').addClass('translationText').css('color', color).html(text);
     var $newdiv = $('<div/>').css('opacity', '0');
-    
     $('body').append($newdiv);
     $newdiv.append($newSpan);
-    
-    var divsize = $newSpan.width();
+    var divWidth = $newSpan.width();
     var divHeight = $newSpan.height();
-    console.log(divsize);
-    
     // make position sensitive to size and document's width
-    
-    //$(document).height() - divsize // upper bound
-    //($(document).height() - divsize) - $divRight; // # pixels between right edge of center div and left edge of center edge
-    //(Math.random() * (($(document).height() - divsize) - $divRight)) + $divRight;
-
-    var posx = (Math.random() < 0.5) ? (Math.random() * ($divLeft - divsize)).toFixed() // Place left
-                                     : ((Math.random() * ($(document).width() - divsize - $divRight)) + $divRight).toFixed(); // place right
-    var posy = (Math.random() < 0.5) ? (Math.random() * ($divTop - divHeight)).toFixed() // Place above
-                                     : ((Math.random() * ($(document).height() - divHeight - $divBottom)) + $divBottom).toFixed(); // place below
+    var posx = (Math.random() * ($(document).width() - divWidth)).toFixed();
+    var posy = (Math.random() * ($(document).height() - divHeight)).toFixed();
     
     $newdiv.css({
         'position':'absolute',
-        'width':divsize+'px',
+        'width':divWidth+'px',
         'height':divHeight+'px',
         'left':posx+'px',
-        'top':posy+'px',
-        'background-color': '#f3f3f3',
-    }).delay(1000).fadeTo(500, 1.0, function(){
-      $newSpan.fadeTo(1, 1.0);
-      makeDiv(count-1); 
+        'top':posy+'px'
+    }).delay(delay).fadeTo(1, 1.0, function(){
+      $newSpan.fadeTo(1000, 1.0);
+      makeDiv(index-1); 
     }); 
   }
   
   function makeFinalDiv(){
-    $centeredDiv.fadeTo(600, 1.0);
+    $("#finalText").delay(delay).fadeTo(600, 1.0);
   }
   
-  function getWord(jsonAllLangs){
-    
-  }
-  
-  // ------------------------------------------------------
-  // Variable to hold request
-  // All JQuery variables are prefixed with $
-  // ------------------------------------------------------
-  var request;
-  // ----------------------------------------------------
-  // Function to print all the words
-  // ----------------------------------------------------
-  $("#button").submit(function(event){
-    // abort any pending request
-    if(request) {
-      request.abort();
-    }
-    
-    // Ajax request
-    request = $.ajax({
-      //url: "/insertMovie.php",
-      url: "/getLanguagesForTranslate.php",
-      type: "post",
-      data: '', 
-      dataType: "json"
-    });
-
-    // Callback handler. Called on success! Response is a JSON object
-    request.done(function (responseJSON, textStatus, jqXHR){
-      console.log(responseJSON);
-    });
-    
-  });
+  makeDiv(2);
   
   
 }); // End document.ready

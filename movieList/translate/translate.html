@@ -19,17 +19,17 @@
     width: 200px;
     height: 100px;
     transform: translate(-50%, -50%);
-    border: 1px solid #ccc;
-    background-color: #f3f3f3;
     text-align:center;
-    opacity:0;
+    opacity:1;
   }
   .translationText{
     position:absolute;
     height: auto;
     width: auto;
     white-space: nowrap;
-    background-color: #f3f3f3;
+    opacity:0;
+  }
+  #finalText{
     opacity:0;
   }
   <!-- http://stackoverflow.com/questions/5419134/how-to-detect-if-two-divs-touch-with-jquery -->
@@ -38,10 +38,10 @@
 </head>
 
 <body>
+<button type="button" id="button">Click</button>
   <div class="Contents">
     <div id="centeredDiv" >
-      <p id="translationText"> Hi </p>
-      <button type="button" id="button">Click</button>
+      <p id="finalText"> Hi </p>
     </div>
   </div>
   <script lang="JavaScript" src="translateHelper.js"></script>

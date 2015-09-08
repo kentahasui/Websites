@@ -95,7 +95,7 @@ class Translator
     $ch = curl_init();
     curl_setopt ($ch, CURLOPT_URL, $url);
     //Set the HTTP HEADER Fields.
-    curl_setopt ($ch, CURLOPT_HTTPHEADER, array($this->AuthHeader,"Content-Type: text/xml"));
+    curl_setopt ($ch, CURLOPT_HTTPHEADER, array($this->getAuthHeader(),"Content-Type: text/xml"));
     //CURLOPT_RETURNTRANSFER- TRUE to return the transfer as a string of the return value of curl_exec().
     curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE);
     //CURLOPT_SSL_VERIFYPEER- Set FALSE to stop cURL from verifying the peer's certificate.
@@ -132,11 +132,31 @@ class Translator
       $langsXMLObject = simplexml_load_string($langsXML);
       // Places all 
       foreach($langsXMLObject->string as $language){
-        $languageCode = strip_tags($language->asXML());
+        $languageCode = strip_tags($language);
         $this->LanguageCodes[] = $languageCode;
       }
     }
     return $this->LanguageCodes;
+  }
+  
+  /* Returns an array of language names
+   * 
+   */
+  public function getAllLanguageNames(){
+    echo "\nRetrieving all language names ... ";
+    // First get all language codes as xml string
+    $languagesURL = "http://api.microsofttranslator.com/v2/Http.svc/GetLanguagesForTranslate";
+    $langsXML = $this->curlRequest($languagesURL);
+    $locale = 'en';
+    $url = "http://api.microsofttranslator.com/v2/Http.svc/GetLanguageNames?locale=$locale";
+    $langNamesXML = $this->curlRequest($url, $langsXML);
+    $langNamesXMLObject = simplexml_load_string($langNamesXML);
+    // Places all lang names in an array
+    $LangNames = array();
+    foreach($langNamesXMLObject->string as $langName){
+      $LangNames[] = strip_tags($langName);
+    }
+    return $LangNames;
   }
   
   /* Translates a string from one language to another
@@ -154,7 +174,7 @@ class Translator
     //HTTP getTranslationsMethod URL
     $translationURL = "http://api.microsofttranslator.com/v2/Http.svc/Translate?$params";
     $translationString = $this->curlRequest($translationURL);
-    return $translationString;
+    return strip_tags($translationString);
   }
   
   /* Translates a string into all other languages. 
@@ -163,18 +183,18 @@ class Translator
    * @return Array          Array of translations as text(maybe JSON string?)
    */
   public function translateToAllLanguages($text, $from='en'){
+    echo "   \n Translating all ...";
     // Temporary variable to store results
     $OutputArray = array();
+    // All of the language names
+    $ArrayOfLanguageNames = $this->getAllLanguageNames();
     // All of the language codes
     $ArrayOfLanguageCodes = $this->getLanguagesForTranslate();
     // Place all of the translations into the output array
-    foreach($ArrayOfLanguageCodes as $code){
-      if($code !== $from){
-        $OutputArray[] = $this->translate($text, $from, $code);
-      }
+    foreach($ArrayOfLanguageCodes as $index=>$code){
+      $name = $ArrayOfLanguageNames[$index];
+      $OutputArray[$name] = $this->translate($text, $from, $code);
     }
-    // Place original string at end of array
-    $OutputArray[] = $text;
     return $OutputArray;
   }
   
@@ -189,20 +209,34 @@ class Translator
   
 } // END TRANSLATOR CLASS
 
-/*
+
 // Main thread of execution
 try{
   $translator = new Translator();
-  echo $translator->getAuthHeader();
+  //echo $translator->getAuthHeader();
   echo "\n";
   echo "\n";
-  print_r ($translator->getLanguagesForTranslate());
+  //print_r ($translator->getLanguagesForTranslate());
   echo "\n";
   echo "\n";
-  print_r ($translator->translateToAllLanguages("Hello"));
+  //print_r ($translator->getAllLanguageNames());
+  //$output = $translator->translate("hello", 'en', 'ja');
+  //echo json_encode($Array, JSON_UNESCAPED_UNICODE);
+  echo json_encode(($translator->translateToAllLanguages("I love you")), JSON_UNESCAPED_UNICODE);
 }catch (Exception $e) {
   echo "Exception: " . $e->getMessage() . PHP_EOL;
 }
-  */
+
+/*
+without code: 
+["أحبك","volim te","Обичам те","T'estimo","我爱你","我愛你","volim te","Miluju tě","Jeg elsker dig","Ik hou van jou","Ma armastan sind","Minä rakastan sinua","Je t'aime","Ich liebe dich","Σε αγαπώ","Mwen renmen ou","אני אוהב אותך","मुझे तुमसे प्यार है","kuv hlub koj","szeretlek","Aku cinta kamu","Ti amo","愛しています","qaparHa'qu'","","당신을 사랑해요","es tevi mīlu","aš tave myliu","saya cintakan awak","Inħobbok","In yaabilmajech","jeg elsker deg","Xi di ne'i","دوستت دارم","Kocham cię","Eu te amo","te iubesc","Я тебя люблю","волим те","volim te","ľúbim ťa","ljubim te","Te quiero","Jag älskar dig","ฉันรักเธอ","Seni seviyorum","Я тебе кохаю","ميں تم سے پيار کرتی ہوں","Anh yêu em","rydw i'n dy garu di","I love you"]
+
+with code:
+{"ar":"أحبك","bs-Latn":"volim te","bg":"Обичам те","ca":"T'estimo","zh-CHS":"我爱你","zh-CHT":"我愛你","hr":"volim te","cs":"Miluju tě","da":"Jeg elsker dig","nl":"Ik hou van jou","en":"I love you","et":"Ma armastan sind","fi":"Minä rakastan sinua","fr":"Je t'aime","de":"Ich liebe dich","el":"Σε αγαπώ","ht":"Mwen renmen ou","he":"אני אוהב אותך","hi":"मुझे तुमसे प्यार है","mww":"kuv hlub koj","hu":"szeretlek","id":"Aku cinta kamu","it":"Ti amo","ja":"愛しています","tlh":"qaparHa'qu'","tlh-Qaak":"","ko":"당신을 사랑해요","lv":"es tevi mīlu","lt":"aš tave myliu","ms":"saya cintakan awak","mt":"Inħobbok","yua":"In yaabilmajech","no":"jeg elsker deg","otq":"Xi di ne'i","fa":"دوستت دارم","pl":"Kocham cię","pt":"Eu te amo","ro":"te iubesc","ru":"Я тебя люблю","sr-Cyrl":"волим те","sr-Latn":"volim te","sk":"ľúbim ťa","sl":"ljubim te","es":"Te quiero","sv":"Jag älskar dig","th":"ฉันรักเธอ","tr":"Seni seviyorum","uk":"Я тебе кохаю","ur":"ميں تم سے پيار کرتی ہوں","vi":"Anh yêu em","cy":"rydw i'n dy garu di"}
+
+with name:
+{"Arabic":"أحبك","Bosnian (Latin)":"volim te","Bulgarian":"Обичам те","Catalan":"T'estimo","Chinese Simplified":"我爱你","Chinese Traditional":"我愛你","Croatian":"volim te","Czech":"Miluju tě","Danish":"Jeg elsker dig","Dutch":"Ik hou van jou","English":"I love you","Estonian":"Ma armastan sind","Finnish":"Minä rakastan sinua","French":"Je t'aime","German":"Ich liebe dich","Greek":"Σε αγαπώ","Haitian Creole":"Mwen renmen ou","Hebrew":"אני אוהב אותך","Hindi":"मुझे तुमसे प्यार है","Hmong Daw":"kuv hlub koj","Hungarian":"szeretlek","Indonesian":"Aku cinta kamu","Italian":"Ti amo","Japanese":"愛しています","Klingon":"qaparHa'qu'","Klingon (pIqaD)":"","Korean":"당신을 사랑해요","Latvian":"es tevi mīlu","Lithuanian":"aš tave myliu","Malay":"saya cintakan awak","Maltese":"Inħobbok","Yucatec Maya":"In yaabilmajech","Norwegian":"jeg elsker deg","Querétaro Otomi":"Xi di ne'i","Persian":"دوستت دارم","Polish":"Kocham cię","Portuguese":"Eu te amo","Romanian":"te iubesc","Russian":"Я тебя люблю","Serbian (Cyrillic)":"волим те","Serbian (Latin)":"volim te","Slovak":"ľúbim ťa","Slovenian":"ljubim te","Spanish":"Te quiero","Swedish":"Jag älskar dig","Thai":"ฉันรักเธอ","Turkish":"Seni seviyorum","Ukrainian":"Я тебе кохаю","Urdu":"ميں تم سے پيار کرتی ہوں","Vietnamese":"Anh yêu em","Welsh":"rydw i'n dy garu di"}
+
+*/
 
 ?>

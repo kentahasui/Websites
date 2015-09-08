@@ -1,7 +1,8 @@
 <?php
-include 'translatorObjects.php';
-
+include("translatorObjects.php");
+echo "hello";
 $translator = new Translator();
-echo json_encode($translator->getLanguagesForTranslate());
+echo "starting get languages";
+echo $translator->getLanguagesForTranslate();
 
 ?>
