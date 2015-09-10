@@ -10,38 +10,15 @@
         document.write(unescape('%3Cscript%20src%3D%22./jquery-1.11.3.min.js%22%3E%3C/script%3E'));
     }
   </script>
-  <style>
-  #centeredDiv{
-    position:absolute;
-    /* Center the div */
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    height: 100px;
-    transform: translate(-50%, -50%);
-    text-align:center;
-    opacity:1;
-  }
-  .translationText{
-    position:absolute;
-    height: auto;
-    width: auto;
-    white-space: nowrap;
-    opacity:0;
-  }
-  #finalText{
-    opacity:0;
-  }
-  <!-- http://stackoverflow.com/questions/5419134/how-to-detect-if-two-divs-touch-with-jquery -->
-  </style>
+  <link rel = "stylesheet" type="text/css" href="translate.css"/>
 
 </head>
 
 <body>
-<button type="button" id="button">Click</button>
   <div class="Contents">
     <div id="centeredDiv" >
-      <p id="finalText"> Hi </p>
+      <p id="finalText"> I love you, Jyen </p>
+      <button type="button" id="button">Click Me</button>
     </div>
   </div>
   <script lang="JavaScript" src="translateHelper.js"></script>

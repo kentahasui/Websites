@@ -1,4 +1,3 @@
-"https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20150827T185353Z.5ec417e05b82daa4.5ee9f45671ed5d5dab77e90f2b3049fb6cd93a2d&lang=en-ru&text=To+be,+or+not+to+be%3F&text=That+is+the+question"
 
 function translate(text, fromCode, toCode){
   var APIKey = 'trnsl.1.1.20150827T185353Z.5ec417e05b82daa4.5ee9f45671ed5d5dab77e90f2b3049fb6cd93a2d';
@@ -6,7 +5,6 @@ function translate(text, fromCode, toCode){
   urlString += 'https://translate.yandex.net/api/v1.5/tr.json/translate?key=' + APIKey;
   urlString += '&lang=' + fromCode + '-' + toCode;
   urlString += '&text=' + encodeURIComponent(text);
-  console.log(urlString);
   $.ajax({
     url: urlString, 
     dataType: 'json'
@@ -14,7 +12,6 @@ function translate(text, fromCode, toCode){
       console.log(data);
     });
 }
-translate('hello', 'en', 'fr');
 
 function translate2(text, translationCode){
   var APIKey = 'trnsl.1.1.20150827T185353Z.5ec417e05b82daa4.5ee9f45671ed5d5dab77e90f2b3049fb6cd93a2d';

@@ -1,0 +1,41 @@
+@import url(http://fonts.googleapis.com/css?family=Vollkorn);
+html{
+    font-family: 'Vollkorn', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+}
+#centeredDiv{
+    position:absolute;
+    /* Center the div */
+    top: 50%;
+    left: 50%;
+    width: auto;
+    height: auto;
+    padding-top:0px;
+    padding-bottom:0px;
+    transform: translate(-50%, -50%);
+    /* Make the div a circle */
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    text-align:center;
+    /* Hide div until end */
+    opacity:0;
+    z-index: 10;
+    background-color: #FFFFF0;
+}
+.translationText{
+    position:absolute;
+    height: auto;
+    width: auto;
+    white-space: nowrap;
+    opacity:0;
+}
+#finalText{
+    opacity:0;
+    font-family: 'Vollkorn', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+}

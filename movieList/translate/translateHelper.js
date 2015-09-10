@@ -1,4 +1,6 @@
 // TranslateHelper.js
+
+// Section for storing JSON data
 var allTextJSON = 
   ' {"Arabic":"أحبك","Bosnian (Latin)":"volim te","Bulgarian":"Обичам те","Catalan":"T\'estimo","Chinese Simplified":"我爱你",         '+ 
   ' "Chinese Traditional":"我愛你","Croatian":"volim te","Czech":"Miluju tě","Danish":"Jeg elsker dig","Dutch":"Ik hou van jou",       '+ 
@@ -15,28 +17,44 @@ var allTextArray = $.map(allTextObject, function(text, language){return {'langua
 $.each(allTextArray, function(index, element){console.log(element)});
 var arrayLength=allTextArray.length;
 
-var delay = 750;
+// Global variables
+var delay = 300;
+var count = 50;
 
 $(document).ready(function(){
+  
+  /* Onclick handler for the button */
+  $('#button').click(function(){
+    $(this).remove();
+    makeDiv(count);
+  });
+  
+  /* Recursively creates new Divs until index < 0 */
   function makeDiv(index){
-    if(index < 0)return makeFinalDiv();
+    if(index < 0) return makeFinalDiv(); // End recursive call
     
-    // vary size and color for fun
+    // vary color
     var color = '#'+ Math.round(0xffffff * Math.random()).toString(16);
     var object = allTextArray[index % arrayLength];
     var text = object['text'];
     var language = object['language'];
+    
     // Create new span and div to place in page
-    var $newSpan = $('<span/>').addClass('translationText').css('color', color).html(text);
+    var $newSpan = $('<span/>').addClass('translationText')
+                               .css('color', color)
+                               .attr('title', language)
+                               .html(text + ", Jyen");
     var $newdiv = $('<div/>').css('opacity', '0');
     $('body').append($newdiv);
     $newdiv.append($newSpan);
     var divWidth = $newSpan.width();
     var divHeight = $newSpan.height();
+    
     // make position sensitive to size and document's width
     var posx = (Math.random() * ($(document).width() - divWidth)).toFixed();
     var posy = (Math.random() * ($(document).height() - divHeight)).toFixed();
     
+    // Place Div in page
     $newdiv.css({
         'position':'absolute',
         'width':divWidth+'px',
@@ -46,14 +64,13 @@ $(document).ready(function(){
     }).delay(delay).fadeTo(1, 1.0, function(){
       $newSpan.fadeTo(1000, 1.0);
       makeDiv(index-1); 
-    }); 
+    });
   }
   
+  /* Final Callback function */
   function makeFinalDiv(){
-    $("#finalText").delay(delay).fadeTo(600, 1.0);
+    var color = '#'+ Math.round(0xffffff * Math.random()).toString(16);
+    $("#finalText").delay(delay).fadeTo(600, 1.0).css('color', color);
   }
-  
-  makeDiv(2);
-  
   
 }); // End document.ready
