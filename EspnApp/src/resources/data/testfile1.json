@@ -1,0 +1,95 @@
+{ "players": [
+{"player":{
+		"player-name":"Aaron Rodgers",
+		"player-stats":{
+			"position":"QB",
+			"passing-yards":327,
+			"passing-touchdowns":3,
+			"rushing-yards":28,
+			"rushing-touchdowns":0,
+			"receiving-yards":0,
+			"receiving-touchdowns":0
+		}
+	}
+},
+{"player":{
+		"player-name":"Joique Bell",
+		"player-stats":{
+			"position":"RB",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":83,
+			"rushing-touchdowns":1,
+			"receiving-yards":50,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"Jamaal Charles",
+		"player-stats":{
+			"position":"RB",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":91,
+			"rushing-touchdowns":1,
+			"receiving-yards":10,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"T.Y. Hilton",
+		"player-stats":{
+			"position":"WR",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":150,
+			"receiving-touchdowns":2
+		}
+	}
+},
+{"player":{
+		"player-name":"Odell Beckham",
+		"player-stats":{
+			"position":"WR",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":130,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"Jerry Rice",
+		"player-stats":{
+			"position":"RB",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":91,
+			"rushing-touchdowns":1,
+			"receiving-yards":400,
+			"receiving-touchdowns":4
+		}
+	}
+},
+{"player":{
+		"player-name":"Rob Gronkowski",
+		"player-stats":{
+			"position":"TE",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":87,
+			"receiving-touchdowns":3
+		}
+	}
+}
+]
+
+}

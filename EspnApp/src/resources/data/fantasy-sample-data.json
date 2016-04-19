@@ -1,0 +1,264 @@
+{ "players": [
+{"player":{
+			"player-name":"Cam Newton",
+			"player-stats":{
+				"position":"QB",
+				"passing-yards":226,
+				"passing-touchdowns":3,
+				"rushing-yards":83,
+				"rushing-touchdowns":1,
+				"receiving-yards":0,
+				"receiving-touchdowns":0
+			}
+	}
+},
+{"player":{
+		"player-name":"Aaron Rodgers",
+		"player-stats":{
+			"position":"QB",
+			"passing-yards":327,
+			"passing-touchdowns":3,
+			"rushing-yards":28,
+			"rushing-touchdowns":0,
+			"receiving-yards":0,
+			"receiving-touchdowns":0
+		}
+	}
+},
+{"player":{
+		"player-name":"Drew Brees",
+		"player-stats":{
+			"position":"QB",
+			"passing-yards":375,
+			"passing-touchdowns":4,
+			"rushing-yards":23,
+			"rushing-touchdowns":0,
+			"receiving-yards":0,
+			"receiving-touchdowns":0
+		}
+	}
+},
+{"player":{
+		"player-name":"Tom Brady",
+		"player-stats":{
+			"position":"QB",
+			"passing-yards":317,
+			"passing-touchdowns":2,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":0,
+			"receiving-touchdowns":0
+		}
+	}
+},
+{"player":{
+		"player-name":"Joique Bell",
+		"player-stats":{
+			"position":"RB",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":83,
+			"rushing-touchdowns":1,
+			"receiving-yards":50,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"Jamaal Charles",
+		"player-stats":{
+			"position":"RB",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":91,
+			"rushing-touchdowns":1,
+			"receiving-yards":10,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"DeMarco Murray",
+		"player-stats":{
+			"position":"RB",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":179,
+			"rushing-touchdowns":1,
+			"receiving-yards":49,
+			"receiving-touchdowns":0
+		}
+	}
+},
+{"player":{
+		"player-name":"Arian Foster",
+		"player-stats":{
+			"position":"RB",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":127,
+			"rushing-touchdowns":1,
+			"receiving-yards":21,
+			"receiving-touchdowns":0
+		}
+	}
+},
+{"player":{
+		"player-name":"LeVeon Bell",
+		"player-stats":{
+			"position":"RB",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":185,
+			"rushing-touchdowns":2,
+			"receiving-yards":50,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"Eddie Lacy",
+		"player-stats":{
+			"position":"RB",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":73,
+			"rushing-touchdowns":1,
+			"receiving-yards":33,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"T.Y. Hilton",
+		"player-stats":{
+			"position":"WR",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":150,
+			"receiving-touchdowns":2
+		}
+	}
+},
+{"player":{
+		"player-name":"A.J. Green",
+		"player-stats":{
+			"position":"WR",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":224,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"Julio Jones",
+		"player-stats":{
+			"position":"WR",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":259,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"Odell Beckham",
+		"player-stats":{
+			"position":"WR",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":130,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"Calvin Johnson",
+		"player-stats":{
+			"position":"WR",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":158,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"Jordy Nelson",
+		"player-stats":{
+			"position":"WR",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":146,
+			"receiving-touchdowns":2
+		}
+	}
+},
+{"player":{
+		"player-name":"Rob Gronkowski",
+		"player-stats":{
+			"position":"TE",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":87,
+			"receiving-touchdowns":3
+		}
+	}
+},
+{"player":{
+		"player-name":"Greg Olsen",
+		"player-stats":{
+			"position":"TE",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":72,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"Jimmy Graham",
+		"player-stats":{
+			"position":"TE",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":192,
+			"receiving-touchdowns":1
+		}
+	}
+},
+{"player":{
+		"player-name":"Antonio Gates",
+		"player-stats":{
+			"position":"TE",
+			"passing-yards":0,
+			"passing-touchdowns":0,
+			"rushing-yards":0,
+			"rushing-touchdowns":0,
+			"receiving-yards":156,
+			"receiving-touchdowns":2
+		}
+	}
+}
+]
+
+}

@@ -1,0 +1,31 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <style>
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #getRosterButton{
+            margin:10px 10px
+        }
+    </style>
+</head>
+
+<body>
+
+<div class='wrapper'>
+    <!--[if !IE]><!-->
+    <input id="jsonURL" type="url" title="URL for the JSON data" value="https://espn.go.com/users/recruiting/fantasy-sample-data.json" />
+    <!--<![endif]-->
+    <!--[if IE]><input id="jsonURL" type="url" title="URL for the JSON data" value="https://api.myjson.com/bins/3bmq4"/><![endif]-->
+    <button id="getRosterButton">Get Roster</button>
+    <textarea id="roster" rows="4" cols="50"></textarea>
+</div>
+
+<script src="resources/js/lineupCreator.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<html>
+<head>
+    <style>
+        /* ONLY use CSS to create the button */
+        a {
+            /* Colors. Lighter gray button */
+            background: rgb(195, 195, 195);
+            /* Dark gray text */
+            color: rgb(85, 85, 85);
+
+            /* Padding. Centers text within button */
+            padding: 20px 75px;
+
+            /* needed to prevent top margin from collapsing */
+            display: inline-block;
+
+            /* Remove underline */
+            text-decoration: none;
+
+            /* Use a font-family without serifs, spaced closely together*/
+            font-family: Helvetica, Arial, sans-serif;
+            font-weight: bold;
+            font-size: 2em;
+            letter-spacing: -0.1em;
+
+            /* Border: width, style and color */
+            border: 8px solid rgb(205, 205, 205);
+
+            /* Rounded edges */
+            border-radius: 20px;
+
+            /* Shadows */
+            box-shadow:
+                /* First border around "ESPN" - gives a protruding look*/
+                inset 0px 0px 0px 2px  rgb(170, 170, 170),
+                /* Light shadow that goes halfway down the button*/
+                inset 0px 35px 0px 0px rgb(210, 210, 210),
+                /* Shading underneath protruding portion of button */
+                inset 0px -3px 0px 1px rgb(133, 133, 133),
+                /* White border around the whole button*/
+                0px 0px 0px 2.5px      rgb(255, 255, 255),
+                /* Black border around the white border */
+                0px 0px 0px 5px        rgb(100, 100, 100);
+        }
+
+        a:hover{
+            /* Gets darker when hovering over to simulate getting pressed */
+            background: rgb(170, 170, 170);
+            box-shadow:
+                /* White border around the whole button*/
+                0px 0px 0px 2.5px      rgb(255, 255, 255),
+                /* Black border around the white border */
+                0px 0px 0px 5px        rgb(100, 100, 100);
+        }
+
+        body{
+            /* Center the button in the middle */
+            width:100%;
+            display:block;
+            text-align:center;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- DO NOT change any markup, use CSS only -->
+<a href="#">
+    ESPN
+</a>
+
+</body>
+</html>
